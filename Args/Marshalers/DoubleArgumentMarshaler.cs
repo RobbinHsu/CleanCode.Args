@@ -8,7 +8,7 @@
     {
         public double doubleValue = 0;
 
-        public void set(IEnumerator<string> currentArgument)
+        public void Set(IEnumerator<string> currentArgument)
         {
             string parameter = null;
             try

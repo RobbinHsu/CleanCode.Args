@@ -7,12 +7,12 @@
     {
         private bool booleanValue = false;
 
-        public void set(IEnumerator<string> currentArgument)
+        public void Set(IEnumerator<string> currentArgument)
         {
             booleanValue = true;
         }
 
-        public static bool getValue(IArgumentMarshaler am)
+        public static bool GetValue(IArgumentMarshaler am)
         {
             if(am != null && am.GetType() == typeof(BooleanArgumentMarshaler))
             {

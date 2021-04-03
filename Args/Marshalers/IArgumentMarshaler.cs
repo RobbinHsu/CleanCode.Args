@@ -4,6 +4,6 @@
 
     public interface IArgumentMarshaler
     {
-        void set(IEnumerator<string> currentArgument);
+        void Set(IEnumerator<string> currentArgument);
     }
 }

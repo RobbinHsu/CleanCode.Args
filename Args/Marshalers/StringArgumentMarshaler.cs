@@ -8,7 +8,7 @@
     {
         private string stringValue = string.Empty;
 
-        public void set(IEnumerator<string> currentArgument)
+        public void Set(IEnumerator<string> currentArgument)
         {
             if (currentArgument.MoveNext() == false)
             {
@@ -18,7 +18,7 @@
             stringValue = currentArgument.Current;
         }
 
-        public static string getValue(IArgumentMarshaler am)
+        public static string GetValue(IArgumentMarshaler am)
         {
             if(am != null && am.GetType() == typeof(StringArgumentMarshaler))
             {

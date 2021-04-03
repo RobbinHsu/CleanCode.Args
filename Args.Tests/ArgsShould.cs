@@ -25,8 +25,8 @@
             }
             catch(ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
             }
         }
 
@@ -40,8 +40,8 @@
             }
             catch(ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
             }
         }
 
@@ -55,8 +55,8 @@
             }
             catch(ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_NAME, e.getErrorCode());
-                Assert.AreEqual('*', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_NAME, e.GetErrorCode());
+                Assert.AreEqual('*', e.GetErrorArgumentId());
             }
         }
 
@@ -70,8 +70,8 @@
             }
             catch(ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_FORMAT, e.getErrorCode());
-                Assert.AreEqual('f', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_FORMAT, e.GetErrorCode());
+                Assert.AreEqual('f', e.GetErrorArgumentId());
             }
         }
 
@@ -80,7 +80,7 @@
         {
             var args = new Args("x", new string[] { "-x" });
 
-            Assert.AreEqual(true, args.getBoolean('x'));
+            Assert.AreEqual(true, args.GetBoolean('x'));
         }
 
         [Test]
@@ -89,7 +89,7 @@
             var stringValue = "test-value";
             var args = new Args("x*", new string[] { "-x", stringValue });
 
-            Assert.AreEqual(stringValue, args.getString('x'));
+            Assert.AreEqual(stringValue, args.GetString('x'));
         }
 
         [Test]
@@ -102,8 +102,8 @@
             }
             catch (ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.MISSING_STRING, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.MISSING_STRING, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
             }
         }
 
@@ -112,11 +112,11 @@
         {
             var args = new Args("x, y", new string[] { "-xy" });
 
-            Assert.True(args.has('x'));
-            Assert.True(args.has('y'));
+            Assert.True(args.Has('x'));
+            Assert.True(args.Has('y'));
 
-            Assert.AreEqual(true, args.getBoolean('x'));
-            Assert.AreEqual(true, args.getBoolean('y'));
+            Assert.AreEqual(true, args.GetBoolean('x'));
+            Assert.AreEqual(true, args.GetBoolean('y'));
         }
 
         [Test]
@@ -125,7 +125,7 @@
             var intValue = 42;
             var args = new Args("x#", new string[] { "-x", intValue.ToString()});
 
-            Assert.AreEqual(intValue, args.getInt('x'));
+            Assert.AreEqual(intValue, args.GetInt('x'));
         }
 
         [Test]
@@ -139,9 +139,9 @@
             }
             catch (ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.INVALID_INTEGER, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
-                Assert.AreEqual(invalidIntegerParameter, e.getErrorParameter());
+                Assert.AreEqual(ErrorCodes.INVALID_INTEGER, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
+                Assert.AreEqual(invalidIntegerParameter, e.GetErrorParameter());
             }
         }
 
@@ -155,8 +155,8 @@
             }
             catch (ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.MISSING_INTEGER, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.MISSING_INTEGER, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
             }
         }
 
@@ -166,7 +166,7 @@
             var doubleValue = 3.1419d;
             var args = new Args("x##", new string[] { "-x", doubleValue.ToString()});
 
-            Assert.AreEqual(doubleValue, args.getDouble('x'));
+            Assert.AreEqual(doubleValue, args.GetDouble('x'));
         }
 
         [Test]
@@ -180,9 +180,9 @@
             }
             catch (ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.INVALID_DOUBLE, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
-                Assert.AreEqual(invalidDoubleParameter, e.getErrorParameter());
+                Assert.AreEqual(ErrorCodes.INVALID_DOUBLE, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
+                Assert.AreEqual(invalidDoubleParameter, e.GetErrorParameter());
             }
         }
 
@@ -196,8 +196,8 @@
             }
             catch (ArgsException e)
             {
-                Assert.AreEqual(ErrorCodes.MISSING_DOUBLE, e.getErrorCode());
-                Assert.AreEqual('x', e.getErrorArgumentId());
+                Assert.AreEqual(ErrorCodes.MISSING_DOUBLE, e.GetErrorCode());
+                Assert.AreEqual('x', e.GetErrorArgumentId());
             }
         }
     }

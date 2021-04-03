@@ -8,13 +8,13 @@
     {
         private int intValue = 0;
 
-        public void set(IEnumerator<string> currentArgument)
+        public void Set(IEnumerator<string> currentArgument)
         {
             string parameter = null;
 
             try
             {
-                if(currentArgument.MoveNext() == false)
+                if (currentArgument.MoveNext() == false)
                 {
                     throw new ArgsException(ErrorCodes.MISSING_INTEGER);
                 }
@@ -22,25 +22,25 @@
                 parameter = currentArgument.Current;
                 intValue = int.Parse(parameter);
             }
-            catch(ArgumentNullException e)
+            catch (ArgumentNullException e)
             {
                 throw new ArgsException(ErrorCodes.MISSING_INTEGER);
             }
-            catch(FormatException e)
+            catch (FormatException e)
             {
                 throw new ArgsException(ErrorCodes.INVALID_INTEGER, parameter);
             }
-            catch(OverflowException e)
+            catch (OverflowException e)
             {
                 throw new ArgsException(ErrorCodes.INVALID_INTEGER, parameter);
             }
         }
 
-        public static int getValue(IArgumentMarshaler am)
+        public static int GetValue(IArgumentMarshaler am)
         {
-            if(am != null && am.GetType() == typeof(IntArgumentMarshaler))
+            if (am != null && am.GetType() == typeof(IntArgumentMarshaler))
             {
-                return ((IntArgumentMarshaler)am).intValue;
+                return ((IntArgumentMarshaler) am).intValue;
             }
 
             return 0;

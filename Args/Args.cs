@@ -8,51 +8,51 @@
 
     public class Args
     {
-        private Dictionary<char, IArgumentMarshaler> marshalers;
-        private ISet<char> argsFound;
+        private readonly ISet<char> argsFound;
         private IEnumerator<string> currentArgument;
+        private readonly Dictionary<char, IArgumentMarshaler> marshalers;
 
         public Args(string schema, string[] args)
         {
             marshalers = new Dictionary<char, IArgumentMarshaler>();
             argsFound = new HashSet<char>();
 
-            parseSchema(schema);
-            parseArgumentStrings(args.ToList());
+            ParseSchema(schema);
+            ParseArgumentStrings(args.ToList());
         }
 
-        private void parseSchema(string schema)
+        private void ParseSchema(string schema)
         {
-            string[] schemaElements = schema.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string element in schemaElements)
+            var schemaElements = schema.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var element in schemaElements)
             {
-                parseSchemaElement(element.Trim());
+                ParseSchemaElement(element.Trim());
             }
         }
 
-        private void parseSchemaElement(string element)
+        private void ParseSchemaElement(string element)
         {
-            char elementId = element[0];
-            string elementTail = element.Substring(1);
-            validateSchemaElementId(elementId);
+            var elementId = element[0];
+            var elementTail = element.Substring(1);
+            ValidateSchemaElementId(elementId);
 
-            if(elementTail.Length == 0)
+            if (elementTail.Length == 0)
             {
                 marshalers.Add(elementId, new BooleanArgumentMarshaler());
             }
-            else if(elementTail.Equals("*"))
+            else if (elementTail.Equals("*"))
             {
                 marshalers.Add(elementId, new StringArgumentMarshaler());
             }
-            else if(elementTail.Equals("#"))
+            else if (elementTail.Equals("#"))
             {
                 marshalers.Add(elementId, new IntArgumentMarshaler());
             }
-            else if(elementTail.Equals("##"))
+            else if (elementTail.Equals("##"))
             {
                 marshalers.Add(elementId, new DoubleArgumentMarshaler());
             }
-            else if(elementTail.Equals("[*]"))
+            else if (elementTail.Equals("[*]"))
             {
                 marshalers.Add(elementId, new StringArrayArgumentMarshaler());
             }
@@ -62,24 +62,24 @@
             }
         }
 
-        private void validateSchemaElementId(char elementId)
+        private void ValidateSchemaElementId(char elementId)
         {
-            if(char.IsLetter(elementId) == false)
+            if (char.IsLetter(elementId) == false)
             {
                 throw new ArgsException(ErrorCodes.INVALID_ARGUMENT_NAME, elementId, null);
             }
         }
 
-        private void parseArgumentStrings(List<string> argsList)
+        private void ParseArgumentStrings(List<string> argsList)
         {
             currentArgument = argsList.GetEnumerator();
 
-            for(currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext() == true;)
+            for (currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext() == true;)
             {
                 var argString = currentArgument.Current;
-                if(argString.StartsWith("-"))
+                if (argString.StartsWith("-"))
                 {
-                    parseArgumentCharacters(argString.Substring(1));
+                    ParseArgumentCharacters(argString.Substring(1));
                 }
                 else
                 {
@@ -88,18 +88,17 @@
             }
         }
 
-        private void parseArgumentCharacters(string argChars)
+        private void ParseArgumentCharacters(string argChars)
         {
-            for(int i = 0; i < argChars.Length; i++)
+            for (var i = 0; i < argChars.Length; i++)
             {
-                parseArgumentCharacter(argChars[i]);
+                ParseArgumentCharacter(argChars[i]);
             }
         }
 
-        private void parseArgumentCharacter(char argChar)
+        private void ParseArgumentCharacter(char argChar)
         {
-            IArgumentMarshaler m;
-            if(marshalers.TryGetValue(argChar, out m) == false)
+            if (marshalers.TryGetValue(argChar, out var m) == false)
             {
                 throw new ArgsException(ErrorCodes.UNEXPECTED_ARGUMENT, argChar, null);
             }
@@ -108,26 +107,26 @@
                 argsFound.Add(argChar);
                 try
                 {
-                    m.set(currentArgument);
+                    m.Set(currentArgument);
                 }
                 catch (ArgsException e)
                 {
-                    e.setErrorArgumentId(argChar);
+                    e.SetErrorArgumentId(argChar);
                     throw e;
                 }
             }
         }
 
-        public bool has(char arg)
+        public bool Has(char arg)
         {
             return argsFound.Contains(arg);
         }
 
-        public int nextArgument()
+        public int NextArgument()
         {
-            int currentItem = currentArgument.Current.GetHashCode();
-            int index = 0;
-            foreach(var arg in argsFound)
+            var currentItem = currentArgument.Current.GetHashCode();
+            var index = 0;
+            foreach (var arg in argsFound)
             {
                 if (arg.GetHashCode() == currentItem.GetHashCode())
                 {
@@ -140,27 +139,27 @@
             return -1;
         }
 
-        public bool getBoolean(char arg)
+        public bool GetBoolean(char arg)
         {
-            return BooleanArgumentMarshaler.getValue(marshalers[arg]);
+            return BooleanArgumentMarshaler.GetValue(marshalers[arg]);
         }
 
-        public string getString(char arg)
+        public string GetString(char arg)
         {
-            return StringArgumentMarshaler.getValue(marshalers[arg]);
+            return StringArgumentMarshaler.GetValue(marshalers[arg]);
         }
 
-        public int getInt(char arg)
+        public int GetInt(char arg)
         {
-            return IntArgumentMarshaler.getValue(marshalers[arg]);
+            return IntArgumentMarshaler.GetValue(marshalers[arg]);
         }
 
-        public double getDouble(char arg)
+        public double GetDouble(char arg)
         {
             return DoubleArgumentMarshaler.getValue(marshalers[arg]);
         }
 
-        public string[] getStringArray(char arg)
+        public string[] GetStringArray(char arg)
         {
             return StringArrayArgumentMarshaler.getValue(marshalers[arg]);
         }

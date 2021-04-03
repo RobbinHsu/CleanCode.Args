@@ -30,37 +30,37 @@
             this.errorParameter = errorParameter;
         }
 
-        public char getErrorArgumentId()
+        public char GetErrorArgumentId()
         {
             return errorArgumentId;
         }
 
-        public void setErrorArgumentId(char errorArgumentId)
+        public void SetErrorArgumentId(char errorArgumentId)
         {
             this.errorArgumentId = errorArgumentId;
         }
 
-        public string getErrorParameter()
+        public string GetErrorParameter()
         {
             return this.errorParameter;
         }
 
-        public void setErrorParameter(string errorParameter)
+        public void SetErrorParameter(string errorParameter)
         {
             this.errorParameter = errorParameter;
         }
 
-        public ErrorCodes getErrorCode()
+        public ErrorCodes GetErrorCode()
         {
             return this.errorCode;
         }
 
-        public void setErrorCode(ErrorCodes errorCode)
+        public void SetErrorCode(ErrorCodes errorCode)
         {
             this.errorCode = errorCode;
         }
 
-        public string errorMessage()
+        public string ErrorMessage()
         {
             switch (errorCode)
             {

@@ -8,7 +8,7 @@
     {
         private string[] stringArrayValue = new string[] { };
 
-        public void set(IEnumerator<string> currentArgument)
+        public void Set(IEnumerator<string> currentArgument)
         {
             string parameter = string.Empty;
             try
