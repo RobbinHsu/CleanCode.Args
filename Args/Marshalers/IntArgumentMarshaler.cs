@@ -6,7 +6,7 @@
 
     public class IntArgumentMarshaler : IArgumentMarshaler
     {
-        private int intValue = 0;
+        private int intValue;
 
         public void Set(IEnumerator<string> currentArgument)
         {

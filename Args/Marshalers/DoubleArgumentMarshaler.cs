@@ -6,14 +6,14 @@
 
     public class DoubleArgumentMarshaler : IArgumentMarshaler
     {
-        public double doubleValue = 0;
+        public double doubleValue;
 
         public void Set(IEnumerator<string> currentArgument)
         {
             string parameter = null;
             try
             {
-                if(currentArgument.MoveNext() == false)
+                if (currentArgument.MoveNext() == false)
                 {
                     throw new ArgsException(ErrorCodes.MISSING_DOUBLE);
                 }
@@ -21,15 +21,15 @@
                 parameter = currentArgument.Current;
                 doubleValue = double.Parse(parameter);
             }
-            catch(ArgumentNullException)
+            catch (ArgumentNullException)
             {
                 throw new ArgsException(ErrorCodes.MISSING_DOUBLE);
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 throw new ArgsException(ErrorCodes.INVALID_DOUBLE, parameter);
             }
-            catch(OverflowException)
+            catch (OverflowException)
             {
                 throw new ArgsException(ErrorCodes.INVALID_DOUBLE, parameter);
             }
@@ -37,12 +37,12 @@
 
         public static double getValue(IArgumentMarshaler am)
         {
-            if(am != null && am.GetType() == typeof(DoubleArgumentMarshaler))
+            if (am != null && am.GetType() == typeof(DoubleArgumentMarshaler))
             {
-                return ((DoubleArgumentMarshaler)am).doubleValue;
+                return ((DoubleArgumentMarshaler) am).doubleValue;
             }
 
-            return 0;            
+            return 0;
         }
     }
 }

@@ -20,9 +20,9 @@
 
         public static string GetValue(IArgumentMarshaler am)
         {
-            if(am != null && am.GetType() == typeof(StringArgumentMarshaler))
+            if (am != null && am.GetType() == typeof(StringArgumentMarshaler))
             {
-                return ((StringArgumentMarshaler)am).stringValue;
+                return ((StringArgumentMarshaler) am).stringValue;
             }
 
             return string.Empty;

@@ -5,12 +5,16 @@
     public class ArgsException : Exception
     {
         private char errorArgumentId = '\0';
-        private string errorParameter = null;
         private ErrorCodes errorCode = ErrorCodes.OK;
+        private string errorParameter;
 
-        public ArgsException() { }
+        public ArgsException()
+        {
+        }
 
-        public ArgsException(string message) : base(message) { }
+        public ArgsException(string message) : base(message)
+        {
+        }
 
         public ArgsException(ErrorCodes errorCode)
         {
@@ -28,36 +32,6 @@
             this.errorCode = errorCode;
             this.errorArgumentId = errorArgumentId;
             this.errorParameter = errorParameter;
-        }
-
-        public char GetErrorArgumentId()
-        {
-            return errorArgumentId;
-        }
-
-        public void SetErrorArgumentId(char errorArgumentId)
-        {
-            this.errorArgumentId = errorArgumentId;
-        }
-
-        public string GetErrorParameter()
-        {
-            return this.errorParameter;
-        }
-
-        public void SetErrorParameter(string errorParameter)
-        {
-            this.errorParameter = errorParameter;
-        }
-
-        public ErrorCodes GetErrorCode()
-        {
-            return this.errorCode;
-        }
-
-        public void SetErrorCode(ErrorCodes errorCode)
-        {
-            this.errorCode = errorCode;
         }
 
         public string ErrorMessage()
@@ -85,6 +59,36 @@
             }
 
             return string.Empty;
+        }
+
+        public char GetErrorArgumentId()
+        {
+            return errorArgumentId;
+        }
+
+        public ErrorCodes GetErrorCode()
+        {
+            return errorCode;
+        }
+
+        public string GetErrorParameter()
+        {
+            return errorParameter;
+        }
+
+        public void SetErrorArgumentId(char errorArgumentId)
+        {
+            this.errorArgumentId = errorArgumentId;
+        }
+
+        public void SetErrorCode(ErrorCodes errorCode)
+        {
+            this.errorCode = errorCode;
+        }
+
+        public void SetErrorParameter(string errorParameter)
+        {
+            this.errorParameter = errorParameter;
         }
     }
 }

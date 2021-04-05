@@ -7,19 +7,11 @@
     public class ArgsExceptionShould
     {
         [Test]
-        public void CorrectlyReturnAnExceptionForAnUnexpectedArgument()
+        public void CorrectlyReturnAnExceptionForAMissingDoubleParameter()
         {
-            var e = new ArgsException(ErrorCodes.UNEXPECTED_ARGUMENT, 'x', null);
+            var e = new ArgsException(ErrorCodes.MISSING_DOUBLE, 'x', null);
 
-            Assert.AreEqual("Argument -x unexpected.", e.ErrorMessage());
-        }
-
-        [Test]
-        public void CorrectlyReturnAnExceptionForAMissingStringParameter()
-        {
-            var e = new ArgsException(ErrorCodes.MISSING_STRING, 'x', null);
-
-            Assert.AreEqual("Could not find a string parameter for -x.", e.ErrorMessage());
+            Assert.AreEqual("Could not find a double parameter for -x.", e.ErrorMessage());
         }
 
         [Test]
@@ -31,19 +23,11 @@
         }
 
         [Test]
-        public void CorrectlyReturnAnExceptionForAnInvalidIntegerParameter()
+        public void CorrectlyReturnAnExceptionForAMissingStringParameter()
         {
-            var e = new ArgsException(ErrorCodes.INVALID_INTEGER, 'x', "Forty two");
+            var e = new ArgsException(ErrorCodes.MISSING_STRING, 'x', null);
 
-            Assert.AreEqual("Argument -x expects an integer but was 'Forty two'.", e.ErrorMessage());
-        }
-
-        [Test]
-        public void CorrectlyReturnAnExceptionForAMissingDoubleParameter()
-        {
-            var e = new ArgsException(ErrorCodes.MISSING_DOUBLE, 'x', null);
-
-            Assert.AreEqual("Could not find a double parameter for -x.", e.ErrorMessage());
+            Assert.AreEqual("Could not find a string parameter for -x.", e.ErrorMessage());
         }
 
         [Test]
@@ -52,6 +36,22 @@
             var e = new ArgsException(ErrorCodes.INVALID_DOUBLE, 'x', "Forty two");
 
             Assert.AreEqual("Argument -x expects a double but was 'Forty two'.", e.ErrorMessage());
+        }
+
+        [Test]
+        public void CorrectlyReturnAnExceptionForAnInvalidIntegerParameter()
+        {
+            var e = new ArgsException(ErrorCodes.INVALID_INTEGER, 'x', "Forty two");
+
+            Assert.AreEqual("Argument -x expects an integer but was 'Forty two'.", e.ErrorMessage());
+        }
+
+        [Test]
+        public void CorrectlyReturnAnExceptionForAnUnexpectedArgument()
+        {
+            var e = new ArgsException(ErrorCodes.UNEXPECTED_ARGUMENT, 'x', null);
+
+            Assert.AreEqual("Argument -x unexpected.", e.ErrorMessage());
         }
     }
 }

@@ -5,6 +5,16 @@
 
     class Program
     {
+        private static void ExecuteApplication(bool logging, int port, string directory, string[] files)
+        {
+            Console.WriteLine("Executed application with:");
+            Console.WriteLine($"bool logging param = {logging}");
+            Console.WriteLine($"int port param = {port}");
+            Console.WriteLine($"string directory param = {directory}");
+            Console.WriteLine($"string array files param = {string.Join(" ", files)}");
+            Console.ReadKey();
+        }
+
         static void Main(string[] args)
         {
             try
@@ -21,16 +31,6 @@
             {
                 Console.WriteLine($"Argument error: {e.ErrorMessage()}");
             }
-        }
-
-        private static void ExecuteApplication(bool logging, int port, string directory, string[] files)
-        {
-            Console.WriteLine("Executed application with:");
-            Console.WriteLine($"bool logging param = {logging}");
-            Console.WriteLine($"int port param = {port}");
-            Console.WriteLine($"string directory param = {directory}");
-            Console.WriteLine($"string array files param = {string.Join(" ", files)}");
-            Console.ReadKey();
         }
     }
 }

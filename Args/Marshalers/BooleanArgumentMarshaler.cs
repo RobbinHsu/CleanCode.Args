@@ -5,7 +5,7 @@
 
     public class BooleanArgumentMarshaler : IArgumentMarshaler
     {
-        private bool booleanValue = false;
+        private bool booleanValue;
 
         public void Set(IEnumerator<string> currentArgument)
         {
@@ -14,9 +14,9 @@
 
         public static bool GetValue(IArgumentMarshaler am)
         {
-            if(am != null && am.GetType() == typeof(BooleanArgumentMarshaler))
+            if (am != null && am.GetType() == typeof(BooleanArgumentMarshaler))
             {
-                return ((BooleanArgumentMarshaler)am).booleanValue;
+                return ((BooleanArgumentMarshaler) am).booleanValue;
             }
 
             return false;

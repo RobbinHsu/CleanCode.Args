@@ -9,8 +9,8 @@
     public class Args
     {
         private readonly ISet<char> argsFound;
-        private IEnumerator<string> currentArgument;
         private readonly Dictionary<char, IArgumentMarshaler> marshalers;
+        private IEnumerator<string> currentArgument;
 
         public Args(string schema, string[] args)
         {
@@ -21,9 +21,101 @@
             ParseArgumentStrings(args.ToList());
         }
 
+        public bool GetBoolean(char arg)
+        {
+            return BooleanArgumentMarshaler.GetValue(marshalers[arg]);
+        }
+
+        public double GetDouble(char arg)
+        {
+            return DoubleArgumentMarshaler.getValue(marshalers[arg]);
+        }
+
+        public int GetInt(char arg)
+        {
+            return IntArgumentMarshaler.GetValue(marshalers[arg]);
+        }
+
+        public string GetString(char arg)
+        {
+            return StringArgumentMarshaler.GetValue(marshalers[arg]);
+        }
+
+        public string[] GetStringArray(char arg)
+        {
+            return StringArrayArgumentMarshaler.getValue(marshalers[arg]);
+        }
+
+        public bool Has(char arg)
+        {
+            return argsFound.Contains(arg);
+        }
+
+        public int NextArgument()
+        {
+            var currentItem = currentArgument.Current.GetHashCode();
+            var index = 0;
+            foreach (var arg in argsFound)
+            {
+                if (arg.GetHashCode() == currentItem.GetHashCode())
+                {
+                    return index;
+                }
+
+                index++;
+            }
+
+            return -1;
+        }
+
+        private void ParseArgumentCharacter(char argChar)
+        {
+            if (marshalers.TryGetValue(argChar, out var m) == false)
+            {
+                throw new ArgsException(ErrorCodes.UNEXPECTED_ARGUMENT, argChar, null);
+            }
+
+            argsFound.Add(argChar);
+            try
+            {
+                m.Set(currentArgument);
+            }
+            catch (ArgsException e)
+            {
+                e.SetErrorArgumentId(argChar);
+                throw e;
+            }
+        }
+
+        private void ParseArgumentCharacters(string argChars)
+        {
+            for (var i = 0; i < argChars.Length; i++)
+            {
+                ParseArgumentCharacter(argChars[i]);
+            }
+        }
+
+        private void ParseArgumentStrings(List<string> argsList)
+        {
+            currentArgument = argsList.GetEnumerator();
+
+            for (currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext();)
+            {
+                var argString = currentArgument.Current;
+                if (argString.StartsWith("-"))
+                {
+                    ParseArgumentCharacters(argString.Substring(1));
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         private void ParseSchema(string schema)
         {
-            var schemaElements = schema.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            var schemaElements = schema.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var element in schemaElements)
             {
                 ParseSchemaElement(element.Trim());
@@ -68,100 +160,6 @@
             {
                 throw new ArgsException(ErrorCodes.INVALID_ARGUMENT_NAME, elementId, null);
             }
-        }
-
-        private void ParseArgumentStrings(List<string> argsList)
-        {
-            currentArgument = argsList.GetEnumerator();
-
-            for (currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext() == true;)
-            {
-                var argString = currentArgument.Current;
-                if (argString.StartsWith("-"))
-                {
-                    ParseArgumentCharacters(argString.Substring(1));
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        private void ParseArgumentCharacters(string argChars)
-        {
-            for (var i = 0; i < argChars.Length; i++)
-            {
-                ParseArgumentCharacter(argChars[i]);
-            }
-        }
-
-        private void ParseArgumentCharacter(char argChar)
-        {
-            if (marshalers.TryGetValue(argChar, out var m) == false)
-            {
-                throw new ArgsException(ErrorCodes.UNEXPECTED_ARGUMENT, argChar, null);
-            }
-            else
-            {
-                argsFound.Add(argChar);
-                try
-                {
-                    m.Set(currentArgument);
-                }
-                catch (ArgsException e)
-                {
-                    e.SetErrorArgumentId(argChar);
-                    throw e;
-                }
-            }
-        }
-
-        public bool Has(char arg)
-        {
-            return argsFound.Contains(arg);
-        }
-
-        public int NextArgument()
-        {
-            var currentItem = currentArgument.Current.GetHashCode();
-            var index = 0;
-            foreach (var arg in argsFound)
-            {
-                if (arg.GetHashCode() == currentItem.GetHashCode())
-                {
-                    return index;
-                }
-
-                index++;
-            }
-
-            return -1;
-        }
-
-        public bool GetBoolean(char arg)
-        {
-            return BooleanArgumentMarshaler.GetValue(marshalers[arg]);
-        }
-
-        public string GetString(char arg)
-        {
-            return StringArgumentMarshaler.GetValue(marshalers[arg]);
-        }
-
-        public int GetInt(char arg)
-        {
-            return IntArgumentMarshaler.GetValue(marshalers[arg]);
-        }
-
-        public double GetDouble(char arg)
-        {
-            return DoubleArgumentMarshaler.getValue(marshalers[arg]);
-        }
-
-        public string[] GetStringArray(char arg)
-        {
-            return StringArrayArgumentMarshaler.getValue(marshalers[arg]);
         }
     }
 }
