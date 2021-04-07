@@ -1,4 +1,8 @@
-﻿namespace Args.Tests
+﻿using System.Collections.Generic;
+using Args.Marshalers;
+using NSubstitute;
+
+namespace Args.Tests
 {
     using Exceptions;
     using NUnit.Framework;
@@ -65,18 +69,17 @@
         [Test]
         public void ThrowAnErrorWhenInitialisedWithAInvalidDoubleValue()
         {
-            var invalidDoubleParameter = "Three point something";
-            try
-            {
-                new Args("x##", new[] {"-x", invalidDoubleParameter});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.INVALID_DOUBLE, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-                Assert.AreEqual(invalidDoubleParameter, e.GetErrorParameter());
-            }
+            //arrange
+            var doubleArgumentMarshaler = new DoubleArgumentMarshaler();
+            var enumerable = Substitute.For<IEnumerator<string>>();
+            enumerable.Current.Returns("Not a number");
+            enumerable.MoveNext().Returns(true);
+
+            //act
+            var argsException = Assert.Throws<ArgsException>(() => doubleArgumentMarshaler.Set(enumerable));
+
+            //assert
+            Assert.AreEqual(ErrorCodes.INVALID_DOUBLE, argsException.GetErrorCode());
         }
 
         [Test]
