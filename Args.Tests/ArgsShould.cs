@@ -68,37 +68,7 @@ namespace Args.Tests
         }
 
 
-        [Test]
-        public void ThrowAnErrorWhenInitialisedWithAMissingIntegerValue()
-        {
-            try
-            {
-                new Args("x#", new[] {"-x"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.MISSING_INTEGER, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
-        }
 
-        [Test]
-        public void ThrowAnErrorWhenInitialisedWithAnInvalidIntegerValue()
-        {
-            var invalidIntegerParameter = "Forty-two";
-            try
-            {
-                new Args("x#", new[] {"-x", invalidIntegerParameter});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.INVALID_INTEGER, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-                Assert.AreEqual(invalidIntegerParameter, e.GetErrorParameter());
-            }
-        }
 
         [Test]
         public void ThrowAnErrorWhenInitialisedWithASchemaWithoutLetters()
