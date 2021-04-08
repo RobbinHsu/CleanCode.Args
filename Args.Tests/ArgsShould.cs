@@ -11,6 +11,16 @@ namespace Args.Tests
     [TestFixture]
     class ArgsShould
     {
+        private DoubleArgumentMarshaler doubleArgumentMarshaler1;
+        private IEnumerator<string> enumerable;
+
+        [SetUp]
+        public void Setup()
+        {
+            doubleArgumentMarshaler1 = new DoubleArgumentMarshaler();
+            enumerable = Substitute.For<IEnumerator<string>>();
+        }
+
         [Test]
         public void BeInitialisableWithNoSchemaOrArgs()
         {
@@ -70,16 +80,14 @@ namespace Args.Tests
         public void ThrowAnErrorWhenInitialisedWithAInvalidDoubleValue()
         {
             //arrange
-            var doubleArgumentMarshaler = new DoubleArgumentMarshaler();
-            var enumerable = Substitute.For<IEnumerator<string>>();
             enumerable.Current.Returns("Not a number");
             enumerable.MoveNext().Returns(true);
 
             //act
-            var argsException = Assert.Throws<ArgsException>(() => doubleArgumentMarshaler.Set(enumerable));
 
             //assert
-            Assert.AreEqual(ErrorCodes.INVALID_DOUBLE, argsException.GetErrorCode());
+            Assert.AreEqual(ErrorCodes.INVALID_DOUBLE,
+                Assert.Throws<ArgsException>(() => doubleArgumentMarshaler1.Set(enumerable)).GetErrorCode());
         }
 
         [Test]

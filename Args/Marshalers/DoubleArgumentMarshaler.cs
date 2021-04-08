@@ -35,7 +35,7 @@
             }
         }
 
-        public static double getValue(IArgumentMarshaler am)
+        public static double GetValue(IArgumentMarshaler am)
         {
             if (am != null && am.GetType() == typeof(DoubleArgumentMarshaler))
             {

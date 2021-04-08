@@ -28,7 +28,7 @@
 
         public double GetDouble(char arg)
         {
-            return DoubleArgumentMarshaler.getValue(marshalers[arg]);
+            return DoubleArgumentMarshaler.GetValue(marshalers[arg]);
         }
 
         public int GetInt(char arg)
