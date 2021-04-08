@@ -69,22 +69,6 @@ namespace Args.Tests
 
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithASchemaWithoutLetters()
-        {
-            try
-            {
-                new Args("*", new string[] { });
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_NAME, e.GetErrorCode());
-                Assert.AreEqual('*', e.GetErrorArgumentId());
-            }
-        }
-
-
-        [Test]
         public void ThrowAnErrorWhenInitialisedWithInvalidSchemaTypes()
         {
             try
@@ -127,6 +111,30 @@ namespace Args.Tests
                 Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.GetErrorCode());
                 Assert.AreEqual('x', e.GetErrorArgumentId());
             }
+        }
+
+        [Test]
+        public void WhenSchemaIsNotLetters()
+        {
+            //arrange
+            var argDelegate = GivenAnyCharacter("*", null);
+
+            //act
+
+            //assert
+            ShouldBeEqual(argDelegate, ErrorCodes.INVALID_ARGUMENT_NAME);
+        }
+
+        private static void ShouldBeEqual(TestDelegate argDelegate, ErrorCodes invalidArgumentName)
+        {
+            Assert.That(Assert.Throws<ArgsException>(argDelegate).GetErrorCode(),
+                Is.EqualTo(invalidArgumentName));
+        }
+
+        private static TestDelegate GivenAnyCharacter(string schema, string[] args)
+        {
+            TestDelegate argDelegate = delegate { new Args(schema, args); };
+            return argDelegate;
         }
     }
 }
