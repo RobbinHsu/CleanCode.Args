@@ -99,25 +99,22 @@ namespace Args.Tests
         }
 
         [Test]
-        public void ThrowAnErrorWhenInitializedWithNoSchemaAndMultipleArgs()
+        public void WhenNoSchemaAndMultipleArgs()
         {
-            try
-            {
-                new Args("", new[] {"-x", "-y"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
+            //arrange
+            var argDelegate = GivenArgs("", new[] {"-x", "-y"});
+
+            //act
+
+            //assert
+            ShouldBeEqual(argDelegate, ErrorCodes.UNEXPECTED_ARGUMENT);
         }
 
         [Test]
         public void WhenSchemaIsNotLetters()
         {
             //arrange
-            var argDelegate = GivenAnyCharacter("*", null);
+            var argDelegate = GivenArgs("*", null);
 
             //act
 
@@ -131,7 +128,7 @@ namespace Args.Tests
                 Is.EqualTo(invalidArgumentName));
         }
 
-        private static TestDelegate GivenAnyCharacter(string schema, string[] args)
+        private static TestDelegate GivenArgs(string schema, string[] args)
         {
             TestDelegate argDelegate = delegate { new Args(schema, args); };
             return argDelegate;
