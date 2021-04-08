@@ -68,8 +68,6 @@ namespace Args.Tests
         }
 
 
-
-
         [Test]
         public void ThrowAnErrorWhenInitialisedWithASchemaWithoutLetters()
         {
@@ -85,20 +83,6 @@ namespace Args.Tests
             }
         }
 
-        [Test]
-        public void ThrowAnErrorWhenInitialisedWithAStringAndNoCorrespondingArgValue()
-        {
-            try
-            {
-                new Args("x*", new[] {"-x"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.MISSING_STRING, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
-        }
 
         [Test]
         public void ThrowAnErrorWhenInitialisedWithInvalidSchemaTypes()
