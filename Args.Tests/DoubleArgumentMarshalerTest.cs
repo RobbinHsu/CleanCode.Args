@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Args.Exceptions;
 using Args.Marshalers;
 using NSubstitute;
@@ -10,13 +9,13 @@ namespace Args.Tests
     [TestFixture]
     public class DoubleArgumentMarshalerTests
     {
-        private DoubleArgumentMarshaler doubleArgumentMarshaler1;
+        private DoubleArgumentMarshaler doubleArgumentMarshaler;
         private IEnumerator<string> enumerable;
 
         [SetUp]
         public void Setup()
         {
-            doubleArgumentMarshaler1 = new DoubleArgumentMarshaler();
+            doubleArgumentMarshaler = new DoubleArgumentMarshaler();
             enumerable = Substitute.For<IEnumerator<string>>();
         }
 
@@ -25,29 +24,36 @@ namespace Args.Tests
         public void ThrowAnErrorWhenInitialisedWithAInvalidDoubleValue()
         {
             //arrange
-            enumerable.Current.Returns("Not a number");
-            enumerable.MoveNext().Returns(true);
+            GivenCurrentArgument("Not a number");
 
             //act
 
             //assert
-            Assert.AreEqual(ErrorCodes.INVALID_DOUBLE,
-                Assert.Throws<ArgsException>(() => doubleArgumentMarshaler1.Set(enumerable)).GetErrorCode());
+            ShouldeBeEqualErrorCode(ErrorCodes.INVALID_DOUBLE);
         }
 
         [Test]
         public void ThrowAnErrorWhenInitialisedWithAMissingDoubleValue()
         {
-            try
-            {
-                new Args("x##", new[] {"-x"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.MISSING_DOUBLE, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
+            //arrange
+            GivenCurrentArgument(null);
+
+            //act
+
+            //assert
+            ShouldeBeEqualErrorCode(ErrorCodes.MISSING_DOUBLE);
+        }
+
+        private void ShouldeBeEqualErrorCode(ErrorCodes errorCode)
+        {
+            Assert.AreEqual(errorCode,
+                Assert.Throws<ArgsException>(() => doubleArgumentMarshaler.Set(enumerable)).GetErrorCode());
+        }
+
+        private void GivenCurrentArgument(string currentArgument)
+        {
+            enumerable.Current.Returns(currentArgument);
+            enumerable.MoveNext().Returns(true);
         }
     }
 }
