@@ -21,7 +21,7 @@ namespace Args.Tests
 
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithAInvalidDoubleValue()
+        public void WhenInitializedWithAInvalidDouble()
         {
             //arrange
             GivenCurrentArgument("Not a number");
@@ -33,7 +33,7 @@ namespace Args.Tests
         }
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithAMissingDoubleValue()
+        public void WhenInitializedWithAMissingDouble()
         {
             //arrange
             GivenCurrentArgument(null);

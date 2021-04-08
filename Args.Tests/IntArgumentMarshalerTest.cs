@@ -22,7 +22,7 @@ namespace Args.Tests
 
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithAMissingIntegerValue()
+        public void WhenInitializedWithAMissingInteger()
         {
             //arrange
             GivenCurrentArgument(null);
@@ -34,7 +34,7 @@ namespace Args.Tests
         }
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithAnInvalidIntegerValue()
+        public void WhenInitializedWithAnInvalidInteger()
         {
             //arrange
             GivenCurrentArgument("Not A Number");
