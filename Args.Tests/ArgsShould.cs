@@ -11,16 +11,6 @@ namespace Args.Tests
     [TestFixture]
     class ArgsShould
     {
-        private DoubleArgumentMarshaler doubleArgumentMarshaler1;
-        private IEnumerator<string> enumerable;
-
-        [SetUp]
-        public void Setup()
-        {
-            doubleArgumentMarshaler1 = new DoubleArgumentMarshaler();
-            enumerable = Substitute.For<IEnumerator<string>>();
-        }
-
         [Test]
         public void BeInitialisableWithNoSchemaOrArgs()
         {
@@ -58,6 +48,7 @@ namespace Args.Tests
             Assert.AreEqual(doubleValue, args.GetDouble('x'));
         }
 
+
         [Test]
         public void ReturnTheCorrectValueWhenPassedAnInteger()
         {
@@ -76,34 +67,6 @@ namespace Args.Tests
             Assert.AreEqual(stringValue, args.GetString('x'));
         }
 
-        [Test]
-        public void ThrowAnErrorWhenInitialisedWithAInvalidDoubleValue()
-        {
-            //arrange
-            enumerable.Current.Returns("Not a number");
-            enumerable.MoveNext().Returns(true);
-
-            //act
-
-            //assert
-            Assert.AreEqual(ErrorCodes.INVALID_DOUBLE,
-                Assert.Throws<ArgsException>(() => doubleArgumentMarshaler1.Set(enumerable)).GetErrorCode());
-        }
-
-        [Test]
-        public void ThrowAnErrorWhenInitialisedWithAMissingDoubleValue()
-        {
-            try
-            {
-                new Args("x##", new[] {"-x"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.MISSING_DOUBLE, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
-        }
 
         [Test]
         public void ThrowAnErrorWhenInitialisedWithAMissingIntegerValue()
