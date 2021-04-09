@@ -69,18 +69,15 @@ namespace Args.Tests
 
 
         [Test]
-        public void ThrowAnErrorWhenInitialisedWithInvalidSchemaTypes()
+        public void WhenInvalidSchemaTypes()
         {
-            try
-            {
-                new Args("f~", new string[] { });
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.INVALID_ARGUMENT_FORMAT, e.GetErrorCode());
-                Assert.AreEqual('f', e.GetErrorArgumentId());
-            }
+            //arrange
+            var argDelegate = GivenArgs("f~", new string[] { });
+
+            //act
+
+            //assert
+            ShouldBeEqual(argDelegate, ErrorCodes.INVALID_ARGUMENT_FORMAT);
         }
 
         [Test]
