@@ -84,18 +84,15 @@ namespace Args.Tests
         }
 
         [Test]
-        public void ThrowAnErrorWhenInitializedWithNoSchemaAndArgs()
+        public void WhenNoSchemaAndArgs()
         {
-            try
-            {
-                new Args("", new[] {"-x"});
-                throw new Exception();
-            }
-            catch (ArgsException e)
-            {
-                Assert.AreEqual(ErrorCodes.UNEXPECTED_ARGUMENT, e.GetErrorCode());
-                Assert.AreEqual('x', e.GetErrorArgumentId());
-            }
+            //arrange
+            var argDelegate = GivenArgs("", new[] {"-x"});
+
+            //act
+
+            //assert
+            ShouldBeEqual(argDelegate, ErrorCodes.UNEXPECTED_ARGUMENT);
         }
 
         [Test]
