@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using Args.Marshalers;
-using NSubstitute;
+﻿using Args.Exceptions;
+using NUnit.Framework;
 
 namespace Args.Tests
 {
-    using Exceptions;
-    using NUnit.Framework;
-    using System;
-
     [TestFixture]
     class ArgsShould
     {
         [Test]
-        public void BeInitialisableWithNoSchemaOrArgs()
+        public void NoSchemaOrArgs()
         {
             var args = new Args(string.Empty, new string[] { });
 
@@ -20,7 +15,7 @@ namespace Args.Tests
         }
 
         [Test]
-        public void BeInitialisableWithSpacesInTheSchema()
+        public void SpacesInTheSchema()
         {
             var args = new Args("x, y", new[] {"-xy"});
 
@@ -29,42 +24,6 @@ namespace Args.Tests
 
             Assert.AreEqual(true, args.GetBoolean('x'));
             Assert.AreEqual(true, args.GetBoolean('y'));
-        }
-
-        [Test]
-        public void ReturnTheCorrectValueWhenPassedABoolean()
-        {
-            var args = new Args("x", new[] {"-x"});
-
-            Assert.AreEqual(true, args.GetBoolean('x'));
-        }
-
-        [Test]
-        public void ReturnTheCorrectValueWhenPassedADouble()
-        {
-            var doubleValue = 3.1419d;
-            var args = new Args("x##", new[] {"-x", doubleValue.ToString()});
-
-            Assert.AreEqual(doubleValue, args.GetDouble('x'));
-        }
-
-
-        [Test]
-        public void ReturnTheCorrectValueWhenPassedAnInteger()
-        {
-            var intValue = 42;
-            var args = new Args("x#", new[] {"-x", intValue.ToString()});
-
-            Assert.AreEqual(intValue, args.GetInt('x'));
-        }
-
-        [Test]
-        public void ReturnTheCorrectValueWhenPassedAString()
-        {
-            var stringValue = "test-value";
-            var args = new Args("x*", new[] {"-x", stringValue});
-
-            Assert.AreEqual(stringValue, args.GetString('x'));
         }
 
 
@@ -102,6 +61,40 @@ namespace Args.Tests
 
             //assert
             ShouldBeEqual(argDelegate, ErrorCodes.UNEXPECTED_ARGUMENT);
+        }
+
+        [Test]
+        public void WhenPassedABoolean()
+        {
+            var args = new Args("x", new[] {"-x"});
+
+            Assert.AreEqual(true, args.GetBoolean('x'));
+        }
+
+        [Test]
+        public void WhenPassedADouble()
+        {
+            var doubleValue = 3.1419d;
+            var args = new Args("x##", new[] {"-x", doubleValue.ToString()});
+
+            Assert.AreEqual(doubleValue, args.GetDouble('x'));
+        }
+
+
+        [Test]
+        public void WhenPassedAnInteger()
+        {
+            var args = new Args("x#", new[] {"-x", 42.ToString()});
+
+            Assert.AreEqual(42, args.GetInt('x'));
+        }
+
+        [Test]
+        public void WhenPassedAString()
+        {
+            var args = new Args("x*", new[] {"-x", "test-value"});
+
+            Assert.AreEqual("test-value", args.GetString('x'));
         }
 
         [Test]
